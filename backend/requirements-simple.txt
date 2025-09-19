@@ -1,0 +1,4 @@
+# Minimal requirements for direct sync service
+supabase==2.0.2
+aiohttp==3.9.1
+python-dotenv==1.0.0

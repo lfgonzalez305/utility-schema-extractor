@@ -1,38 +1,36 @@
 # Utility Schema Extractor
 
-An iterative system for extracting and refining structured schemas from utility engineering specifications across global jurisdictions.
+Simple, reliable system for extracting and validating schemas from utility engineering specifications across global jurisdictions.
 
 ## Overview
 
-This system processes right-of-way utility engineering specifications from various jurisdictions worldwide, extracting structured data and building unified schemas while preserving jurisdiction-specific variations.
+This system processes right-of-way utility engineering specifications from various jurisdictions worldwide, extracting structured data and building unified schemas. **Focus on simplicity**: direct database sync to Rows.com for validation workflows.
 
-## Architecture
+## Architecture (Simplified)
 
-- **Frontend**: Next.js with TypeScript and Tailwind CSS
-- **Backend**: FastAPI with Python for ML/AI processing
 - **Database**: Supabase with PostgreSQL and vector storage
-- **Hosting**: Vercel for frontend, Supabase for backend services
+- **Sync Service**: Python script for direct database to Rows.com sync
+- **Interface**: Rows.com spreadsheets (Python + Postgres integration)
+- **Data Pipeline**: Raw documents → Schema extraction → Rows.com validation
 
 ## Key Features
 
-- Document parsing and data extraction
-- Iterative schema generation and refinement
-- Semantic alignment of properties across jurisdictions
-- Schema inheritance and polymorphism
-- Interactive visualization of schema hierarchies
-- Unit conversion and normalization
-- Mapping preservation between local and global schemas
+- Direct sync from database to Rows.com (no frontend complexity)
+- Spreadsheet-based validation workflows
+- Batch processing with rate limiting
+- Property and mapping validation
+- Real-time collaboration in Rows.com
+- Python integration for custom validation logic
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+
 - Python 3.9+
-- Supabase CLI
-- Vercel CLI (optional, for deployment)
+- Supabase account
+- Rows.com API key
 
-### Installation
+### Quick Setup
 
 1. Clone the repository:
 ```bash
@@ -40,59 +38,70 @@ git clone https://github.com/lfgonzalez305/utility-schema-extractor.git
 cd utility-schema-extractor
 ```
 
-2. Install frontend dependencies:
+2. Install minimal dependencies:
 ```bash
-npm install
+pip install -r backend/requirements-simple.txt
 ```
 
-3. Install backend dependencies:
+3. Configure environment variables:
 ```bash
-cd backend
-pip install -r requirements.txt
+cp .env.simple .env
+# Edit .env with your credentials
 ```
 
-4. Setup Supabase:
+4. Run direct sync:
 ```bash
-supabase init
-supabase start
+python run_sync.py
 ```
 
-### Development
+That's it! You'll get a Rows.com spreadsheet URL for validation.
 
-Run the frontend:
+## Simplified Workflow
+
+1. **Data Ingestion**: Other agent scrapes documents and populates Supabase
+2. **Direct Sync**: Run `python run_sync.py` to create Rows.com spreadsheet
+3. **Validation**: Work entirely in Rows.com to validate properties and mappings
+4. **Analysis**: Use Rows.com's Python integration for advanced validation logic
+
+## Environment Variables
+
 ```bash
-npm run dev
+SUPABASE_URL=your_supabase_project_url
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+ROWS_API_KEY=your_rows_api_key
 ```
 
-Run the backend:
+## Project Structure (Simplified)
+
+```
+├── backend/src/           # Core sync and processing logic
+│   ├── direct_sync.py     # Main sync service
+│   ├── integration_bridge.py  # Data ingestion from other agent
+│   └── schema_mapper.py   # Schema mapping logic
+├── run_sync.py           # Simple runner script
+├── supabase/             # Database schema and migrations
+└── .env.simple          # Configuration template
+```
+
+## Why This Approach?
+
+- **No frontend complexity** - Eliminates React/UI library issues
+- **Familiar interface** - Everyone knows spreadsheets
+- **Python integration** - Custom validation scripts in Rows.com
+- **Direct sync** - No intermediate UI layer to break
+- **Collaborative** - Multiple reviewers can work simultaneously
+- **Reliable** - Simple Python scripts are much more stable
+
+## Usage
+
 ```bash
-npm run backend
+# Run sync and get validation spreadsheet
+python run_sync.py
+
+# Output:
+# ✅ SUCCESS!
+# 📊 Validation Spreadsheet: https://rows.com/spreadsheet/abc123
 ```
-
-## Project Structure
-
-```
-├── src/                    # Next.js frontend
-│   ├── app/               # App router pages
-│   ├── components/        # React components
-│   └── lib/              # Utilities and config
-├── backend/              # FastAPI backend
-│   ├── src/              # Python source code
-│   └── tests/            # Backend tests
-├── database/             # Supabase config
-│   ├── migrations/       # Database migrations
-│   └── seed/            # Seed data
-├── docs/                # Documentation
-└── examples/            # Sample specifications
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
 
 ## License
 
